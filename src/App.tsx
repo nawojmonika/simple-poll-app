@@ -1,24 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>To do: a pun title</h1>
       </header>
+      <main className='container'>
+        <section>
+          Here there will be a poll creator
+        </section>
+        <section>
+          Here there will be a poll to vote
+        </section>
+        <section>
+          Here there will be a diagram
+        </section>
+      </main>
     </div>
   );
 }
