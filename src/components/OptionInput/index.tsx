@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TextInput, TextInputProps } from '../TextInput';
+import { Option } from '../OptionsContext';
 import './OptionInput.css';
 
 type ButtonProps = {
@@ -9,8 +10,7 @@ type ButtonProps = {
     disabled: boolean;
 }
 
-export type OptionProps = Exclude<TextInputProps, 'onChange'> & {
-    id?: string;
+export type OptionProps = Partial<Option> & TextInputProps & {
     button?: Partial<ButtonProps>;
     disabled?: boolean;
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { OptionsWrapper } from './components/OptionsContext';
 import { PollCreator } from './components/PollCreator';
+import { RadioButtonGroup } from './components/RadioButtonGroup';
 
 function App() {
   return (
@@ -12,9 +13,7 @@ function App() {
       <OptionsWrapper>
         <main className='container'>
           <PollCreator />
-          <section>
-            Here there will be a poll to vote
-          </section>
+          <RadioButtonGroup />
           <section>
             Here there will be a diagram
           </section>

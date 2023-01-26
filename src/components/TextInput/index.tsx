@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 export type TextInputProps = {
@@ -24,5 +24,5 @@ export const TextInput = ({ placeholder, value = '', disabled = false, onChange 
         setText(value);
     }, [value]);
 
-    return <input placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} />
+    return <input placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} maxLength={80} />
 };
