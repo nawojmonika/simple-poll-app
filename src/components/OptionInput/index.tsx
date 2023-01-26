@@ -2,12 +2,8 @@ import { TextInput, TextInputProps } from '../TextInput';
 import { v4 as uuidv4 } from 'uuid';
 import './OptionInput.css';
 import { useState } from 'react';
+import { OptionProps } from '../OptionsContext';
 
-export type OptionProps = Exclude<TextInputProps, 'onChange'> & {
-    id?: string;
-    buttonContent?: string;
-    onButtonClick?: (id: string, value: string) => void;
-};
 
 export const OptionInput = ({ id, placeholder, value, buttonContent, onButtonClick }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
@@ -19,7 +15,7 @@ export const OptionInput = ({ id, placeholder, value, buttonContent, onButtonCli
 
     const handleTextChange = (value: string): void => {
         setText(value);
-    }
+    };
 
     return (
         <div className='option'>
