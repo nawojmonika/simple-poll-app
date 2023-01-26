@@ -15,7 +15,7 @@ export type OptionProps = Exclude<TextInputProps, 'onChange'> & {
     disabled?: boolean;
 };
 
-export const OptionInput = ({ id, placeholder, value, button, disabled = false }: OptionProps): JSX.Element => {
+export const OptionInput = ({ id, placeholder, value, button, disabled = false, onChange }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
 
     const handleButtonClick = (): void => {
@@ -25,6 +25,7 @@ export const OptionInput = ({ id, placeholder, value, button, disabled = false }
 
     const handleTextChange = (value: string): void => {
         setText(value);
+        onChange && onChange(value);
     };
 
     return (
