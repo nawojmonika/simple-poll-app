@@ -17,12 +17,17 @@ const defaultOptions: OptionProps[] = [
 
 export const PollCreator = (): JSX.Element => {
     const [options, setOptions] = useState<OptionProps[]>(defaultOptions);
+
+    const handleAddOption = (id: string, value: string): void => {
+        setOptions([...options, { id, value }])
+    };
+
     return (
         <div>
             <TextInput placeholder='What is the question?' />
             <div className='optionList'>
                 {options.map((option) => <OptionInput key={option.id} {...option} />)}
-                <OptionInput placeholder='Type an answer' buttonContent='Add' />
+                <OptionInput placeholder='Type an answer' buttonContent='Add' onButtonClick={handleAddOption} />
             </div>
         </div>
     );

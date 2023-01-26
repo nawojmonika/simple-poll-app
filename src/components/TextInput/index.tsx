@@ -3,20 +3,21 @@ import { useDebounce } from 'use-debounce';
 
 export type TextInputProps = {
     placeholder?: string;
+    value?: string;
     onChange?: (value: string) => void;
 };
 
-export const TextInput = ({ placeholder, onChange }: TextInputProps): JSX.Element => {
-    const [text, setText] = useState<string>('');
-    const [value] = useDebounce(text, 300);
+export const TextInput = ({ placeholder, value, onChange }: TextInputProps): JSX.Element => {
+    const [text, setText] = useState<string>(value || '');
+    const [currentValue] = useDebounce(text, 300);
 
     const handleOnKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
         setText(event.currentTarget.value);
     };
 
     useEffect(() => {
-        value && onChange && onChange(value);
-    }, [value]);
+        onChange && onChange(currentValue);
+    }, [currentValue]);
 
-    return <input onKeyUp={handleOnKeyUp} placeholder={placeholder} />
+    return <input onKeyUp={handleOnKeyUp} placeholder={placeholder} defaultValue={value} />
 };
