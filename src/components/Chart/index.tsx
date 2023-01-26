@@ -15,15 +15,17 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
             caption,
             marks: [
                 Plot.barY(data, {
-                    x: "value",
-                    y: "votes",
-                })],
+                    x: 'value',
+                    y: 'votes',
+                    fill: 'value'
+                }),
+            ],
+            color: {
+                scheme: "category10",
+            },
             y: {
                 grid: true
             },
-            marginLeft: 50,
-            marginTop: 50,
-            marginBottom: 50
         });
         container?.current && container?.current.append(barChart);
         return () => {
