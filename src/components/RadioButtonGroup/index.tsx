@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useOptionsContext } from '../OptionsContext';
-import './RadioButtonGroup.css';
+import styles from './RadioButtonGroup.module.css';
 
 export const RadioButtonGroup = (): JSX.Element => {
     const [currentOptionId, setCurrentOptionId] = useState<string>('');
@@ -21,7 +21,7 @@ export const RadioButtonGroup = (): JSX.Element => {
             {options.map(({ id, value, placeholder }) => {
                 const inputValue = value || placeholder;
                 return (
-                    <div key={id} className='radioInput' onChange={handleChange}>
+                    <div key={id} className={styles.radioInput} onChange={handleChange}>
                         <input type='radio' name={header} id={id} value={inputValue} />
                         <label htmlFor={id}>{inputValue}</label>
                     </div>

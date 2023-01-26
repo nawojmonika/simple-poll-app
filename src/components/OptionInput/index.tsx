@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TextInput, TextInputProps } from '../TextInput';
 import { Option } from '../OptionsContext';
-import './OptionInput.css';
+import styles from './OptionInput.module.css';
 
 type ButtonProps = {
     content: string;
@@ -29,9 +29,9 @@ export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disable
     };
 
     return (
-        <div className='option'>
+        <div className={styles.option}>
             <TextInput placeholder={placeholder} onChange={handleTextChange} value={value} disabled={disabled} />
-            <button className='button' onClick={handleButtonClick} disabled={button?.disabled}>{button?.content ? button?.content : 'X'}</button>
+            <button className={styles.button} onClick={handleButtonClick} disabled={button?.disabled}>{button?.content ? button?.content : 'X'}</button>
         </div>
     );
 };
