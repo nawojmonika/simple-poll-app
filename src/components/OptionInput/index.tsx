@@ -1,16 +1,26 @@
-import { TextInput, TextInputProps } from '../TextInput';
-import { v4 as uuidv4 } from 'uuid';
-import './OptionInput.css';
 import { useState } from 'react';
-import { OptionProps } from '../OptionsContext';
+import { v4 as uuidv4 } from 'uuid';
+import { TextInput, TextInputProps } from '../TextInput';
+import './OptionInput.css';
 
+type ButtonProps = {
+    content: string;
+    onClick: (id: string, value: string) => void;
+    disabled: boolean;
+}
 
-export const OptionInput = ({ id, placeholder, value, buttonContent, onButtonClick }: OptionProps): JSX.Element => {
+export type OptionProps = Exclude<TextInputProps, 'onChange'> & {
+    id?: string;
+    button?: Partial<ButtonProps>;
+    disabled?: boolean;
+};
+
+export const OptionInput = ({ id, placeholder, value, button, disabled = false }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
 
     const handleButtonClick = (): void => {
         const inputId = id || uuidv4();
-        onButtonClick && onButtonClick(inputId, text);
+        button?.onClick && button.onClick(inputId, text);
     };
 
     const handleTextChange = (value: string): void => {
@@ -19,8 +29,8 @@ export const OptionInput = ({ id, placeholder, value, buttonContent, onButtonCli
 
     return (
         <div className='option'>
-            <TextInput placeholder={placeholder} onChange={handleTextChange} value={value} />
-            <button className='button' onClick={handleButtonClick}>{buttonContent ? buttonContent : 'X'}</button>
+            <TextInput placeholder={placeholder} onChange={handleTextChange} value={value} disabled={disabled} />
+            <button className='button' onClick={handleButtonClick} disabled={button?.disabled}>{button?.content ? button?.content : 'X'}</button>
         </div>
     );
 };

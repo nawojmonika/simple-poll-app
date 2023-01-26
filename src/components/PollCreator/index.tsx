@@ -4,15 +4,21 @@ import { useOptionsContext } from '../OptionsContext';
 import './PollCreator.css';
 
 export const PollCreator = (): JSX.Element => {
-    const { options, removeOption, addOption } = useOptionsContext();
+    const { options, minOptions, maxOptions, removeOption, addOption } = useOptionsContext();
+    const disableAddition = options.length === maxOptions;
+    const disableRemoval = options.length === minOptions;
 
     return (
-        <div>
+        <section>
             <TextInput placeholder='What is the question?' />
             <div className='optionList'>
-                {options.map((option) => <OptionInput key={option.id} {...option} onButtonClick={removeOption} />)}
-                <OptionInput placeholder='Type an answer' buttonContent='Add' onButtonClick={addOption} />
+                {options.map((option) => <OptionInput key={option.id} {...option} button={{ disabled: disableRemoval, onClick: removeOption }} />)}
+                <OptionInput placeholder='Type an answer' disabled={disableAddition} button={{ content: 'Add', disabled: disableAddition, onClick: addOption }} />
             </div>
-        </div>
+            <div>
+                <span>{options.length} / {maxOptions} possible answers</span>
+                <button>Reset</button>
+            </div>
+        </section>
     );
 };

@@ -11,9 +11,7 @@ function App() {
       </header>
       <OptionsWrapper>
         <main className='container'>
-          <section>
-            <PollCreator />
-          </section>
+          <PollCreator />
           <section>
             Here there will be a poll to vote
           </section>

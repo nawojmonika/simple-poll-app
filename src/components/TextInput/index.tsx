@@ -4,10 +4,11 @@ import { useDebounce } from 'use-debounce';
 export type TextInputProps = {
     placeholder?: string;
     value?: string;
+    disabled?: boolean;
     onChange?: (value: string) => void;
 };
 
-export const TextInput = ({ placeholder, value, onChange }: TextInputProps): JSX.Element => {
+export const TextInput = ({ placeholder, value, disabled, onChange }: TextInputProps): JSX.Element => {
     const [text, setText] = useState<string>(value || '');
     const [currentValue] = useDebounce(text, 300);
 
@@ -19,5 +20,5 @@ export const TextInput = ({ placeholder, value, onChange }: TextInputProps): JSX
         onChange && onChange(currentValue);
     }, [currentValue]);
 
-    return <input onKeyUp={handleOnKeyUp} placeholder={placeholder} defaultValue={value} />
+    return <input onKeyUp={handleOnKeyUp} placeholder={placeholder} defaultValue={value} disabled={disabled} />
 };
