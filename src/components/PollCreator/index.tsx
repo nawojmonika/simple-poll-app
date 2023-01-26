@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { TextInput, TextInputProps } from '../TextInput';
 import './PollCreator.css';
 import { v4 as uuidv4 } from 'uuid';
+import { OptionInput, OptionProps } from '../OptionInput';
 
-type Option = TextInputProps & {
-    id: string;
-}
 
-const defaultOptions: Option[] = [
+const defaultOptions: OptionProps[] = [
     {
         id: uuidv4(),
         placeholder: 'first option',
@@ -18,19 +16,13 @@ const defaultOptions: Option[] = [
     }
 ]
 
-export const PollCreator = () => {
-    const [options, setOptions] = useState<Option[]>(defaultOptions);
+export const PollCreator = (): JSX.Element => {
+    const [options, setOptions] = useState<OptionProps[]>(defaultOptions);
     return (
         <div>
             <TextInput placeholder='What is the question?' />
             <div className='optionList'>
-                {options.map((option) => {
-                    return (
-                        <div key={option.id} className='option'>
-                            <TextInput {...option} />
-                            <button>X</button>
-                        </div>);
-                })}
+                {options.map((option) => <OptionInput key={option.id} {...option} />)}
             </div>
         </div>
     );
