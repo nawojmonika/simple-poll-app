@@ -21,6 +21,6 @@ function App(): JSX.Element {
       </main>
     </div>
   );
-}
+};
 
 export default App;
