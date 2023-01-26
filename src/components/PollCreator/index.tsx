@@ -4,7 +4,7 @@ import { useOptionsContext } from '../OptionsContext';
 import './PollCreator.css';
 
 export const PollCreator = (): JSX.Element => {
-    const { options, minOptions, maxOptions, removeOption, addOption } = useOptionsContext();
+    const { options, minOptions, maxOptions, removeOption, addOption, resetOptions } = useOptionsContext();
     const disableAddition = options.length === maxOptions;
     const disableRemoval = options.length === minOptions;
 
@@ -17,7 +17,7 @@ export const PollCreator = (): JSX.Element => {
             </div>
             <div>
                 <span>{options.length} / {maxOptions} possible answers</span>
-                <button>Reset</button>
+                <button onClick={resetOptions}>Reset</button>
             </div>
         </section>
     );

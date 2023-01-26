@@ -18,17 +18,18 @@ const defaultOptions: OptionProps[] = [
 
 type OptionsContextData = {
     options: OptionProps[];
+    minOptions: number;
+    maxOptions: number;
     addOption: (id: string, value: string) => void;
     removeOption: (id: string) => void;
-    minOptions?: number;
-    maxOptions?: number;
+    resetOptions: () => void;
 };
 
 type OptionsContextProps = {
     children: React.ReactNode;
 };
 
-export const OptionsContext = createContext<OptionsContextData>({ options: [], addOption: () => undefined, removeOption: () => undefined, });
+export const OptionsContext = createContext<OptionsContextData>({ options: [], minOptions: 0, maxOptions: 0, addOption: () => undefined, removeOption: () => undefined, resetOptions: () => undefined, });
 
 export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element => {
     const [options, setOptions] = useState<OptionProps[]>(defaultOptions);
@@ -42,8 +43,12 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
         setOptions(filteredOptions);
     };
 
+    const resetOptions = (): void => {
+        setOptions(defaultOptions);
+    }
+
     return (
-        <OptionsContext.Provider value={{ options, minOptions, maxOptions, addOption, removeOption }}>
+        <OptionsContext.Provider value={{ options, minOptions, maxOptions, addOption, removeOption, resetOptions }}>
             {children}
         </OptionsContext.Provider>
     );
