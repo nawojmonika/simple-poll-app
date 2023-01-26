@@ -22,11 +22,16 @@ export const PollCreator = (): JSX.Element => {
         setOptions([...options, { id, value }])
     };
 
+    const handleRemoveOption = (id: string): void => {
+        const filteredOptions = options.filter((option) => option.id !== id);
+        setOptions(filteredOptions);
+    }
+
     return (
         <div>
             <TextInput placeholder='What is the question?' />
             <div className='optionList'>
-                {options.map((option) => <OptionInput key={option.id} {...option} />)}
+                {options.map((option) => <OptionInput key={option.id} {...option} onButtonClick={handleRemoveOption} />)}
                 <OptionInput placeholder='Type an answer' buttonContent='Add' onButtonClick={handleAddOption} />
             </div>
         </div>
