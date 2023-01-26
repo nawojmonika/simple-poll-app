@@ -9,4 +9,5 @@
 
 .container>section {
   flex: 1 1 0;
+  padding: 10px;
 }

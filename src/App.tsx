@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { PollCreator } from './components/PollCreator';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       </header>
       <main className='container'>
         <section>
-          Here there will be a poll creator
+          <PollCreator />
         </section>
         <section>
           Here there will be a poll to vote

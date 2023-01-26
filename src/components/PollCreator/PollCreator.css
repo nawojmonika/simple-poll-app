@@ -1,0 +1,8 @@
+.optionList {
+    display: flex;
+    flex-direction: column;
+}
+
+.option {
+    margin-top: 10px;
+}
