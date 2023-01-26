@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './App.module.css';
+import { PollResult } from './components/PollResult';
 import { OptionsWrapper } from './components/OptionsContext';
 import { PollCreator } from './components/PollCreator';
 import { RadioButtonGroup } from './components/RadioButtonGroup';
@@ -14,9 +15,7 @@ function App() {
         <main className={styles.container}>
           <PollCreator />
           <RadioButtonGroup />
-          <section>
-            Here there will be a diagram
-          </section>
+          <PollResult />
         </main>
       </OptionsWrapper>
     </div>
