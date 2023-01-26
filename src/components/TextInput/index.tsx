@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 export type TextInputProps = {
@@ -8,17 +8,21 @@ export type TextInputProps = {
     onChange?: (value: string) => void;
 };
 
-export const TextInput = ({ placeholder, value, disabled, onChange }: TextInputProps): JSX.Element => {
-    const [text, setText] = useState<string>(value || '');
+export const TextInput = ({ placeholder, value = '', disabled = false, onChange }: TextInputProps): JSX.Element => {
+    const [text, setText] = useState<string>(value);
     const [currentValue] = useDebounce(text, 300);
 
-    const handleOnKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
-        setText(event.currentTarget.value);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        setText(event.target.value);
     };
 
     useEffect(() => {
         onChange && onChange(currentValue);
     }, [currentValue]);
 
-    return <input onKeyUp={handleOnKeyUp} placeholder={placeholder} defaultValue={value} disabled={disabled} />
+    useEffect(() => {
+        setText(value);
+    }, [value]);
+
+    return <input placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} />
 };
