@@ -77,6 +77,7 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
 
     const resetOptions = (): void => {
         setQuestion('');
+        setVotes(0);
         setOptions(defaultOptions);
     };
 
