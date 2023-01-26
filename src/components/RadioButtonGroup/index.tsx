@@ -15,7 +15,6 @@ export const RadioButtonGroup = (): JSX.Element => {
         voteForOption(currentOptionId);
     };
 
-
     return (
         <section>
             <h2>{header}</h2>

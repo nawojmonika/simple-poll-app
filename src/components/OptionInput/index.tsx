@@ -10,22 +10,22 @@ type ButtonProps = {
     disabled: boolean;
 }
 
-export type OptionProps = Partial<Option> & TextInputProps & {
+export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange'> & {
     button?: Partial<ButtonProps>;
     disabled?: boolean;
+    onChange?: (id: string, value: string) => void;
 };
 
-export const OptionInput = ({ id, placeholder, value, button, disabled = false, onChange }: OptionProps): JSX.Element => {
+export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disabled = false, onChange }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
 
     const handleButtonClick = (): void => {
-        const inputId = id || uuidv4();
-        button?.onClick && button.onClick(inputId, text);
+        button?.onClick && button.onClick(id, text);
     };
 
     const handleTextChange = (value: string): void => {
         setText(value);
-        onChange && onChange(value);
+        onChange && onChange(id, value);
     };
 
     return (

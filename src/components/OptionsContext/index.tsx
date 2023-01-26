@@ -32,6 +32,7 @@ type OptionsContextData = {
     votes: number;
     setQuestion: (value: string) => void;
     addOption: (id: string, value: string) => void;
+    changeOption: (id: string, value: string) => void;
     removeOption: (id: string) => void;
     resetOptions: () => void;
     voteForOption: (id: string) => void;
@@ -41,7 +42,19 @@ type OptionsContextProps = {
     children: React.ReactNode;
 };
 
-export const OptionsContext = createContext<OptionsContextData>({ options: [], minOptions: 0, maxOptions: 0, question: '', votes: 0, setQuestion: () => undefined, addOption: () => undefined, removeOption: () => undefined, resetOptions: () => undefined, voteForOption: () => undefined, });
+export const OptionsContext = createContext<OptionsContextData>({
+    options: [],
+    minOptions: 0,
+    maxOptions: 0,
+    question: '',
+    votes: 0,
+    setQuestion: () => undefined,
+    addOption: () => undefined,
+    changeOption: () => undefined,
+    removeOption: () => undefined,
+    resetOptions: () => undefined,
+    voteForOption: () => undefined,
+});
 
 export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element => {
     const [question, setQuestion] = useState<string>('');
@@ -50,6 +63,11 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
 
     const addOption = (id: string, value: string): void => {
         setOptions([...options, { id, value, votes: 0 }]);
+    };
+
+    const changeOption = (id: string, value: string): void => {
+        const mappedOptions = options.map((option) => ({ ...option, value: option.id === id ? value : option.value }))
+        setOptions(mappedOptions);
     };
 
     const removeOption = (id: string): void => {
@@ -69,7 +87,7 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
     };
 
     return (
-        <OptionsContext.Provider value={{ question, options, minOptions, maxOptions, votes, setQuestion, addOption, removeOption, resetOptions, voteForOption }}>
+        <OptionsContext.Provider value={{ question, options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
             {children}
         </OptionsContext.Provider>
     );
