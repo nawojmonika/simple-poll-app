@@ -49,16 +49,26 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
                 .attr('y', 10)
                 .attr('fill', 'currentColor')
                 .attr('text-anchor', 'start'));
-
+        console.log(xScale.bandwidth())
         svg.append('g')
             .selectAll('rect')
             .data(I)
             .join('rect')
+            .text('test')
             .attr('fill', i => d3.schemeCategory10[i])
-            .attr('x', i => xScale(X[i]) || '')
+            .attr('x', i => (xScale(X[i]) || 0))
             .attr('y', i => yScale(Y[i]))
             .attr('height', i => yScale(0) - yScale(Y[i]))
             .attr('width', xScale.bandwidth());
+
+        svg.append("g")
+            .selectAll("label")
+            .data(I)
+            .join('text')
+            .text(i => Y[i])
+            .attr('x', i => (xScale(X[i]) || 0) + xScale.bandwidth() / 2)
+            .attr('y', i => yScale(Y[i]) - 5)
+            .attr('fill', 'black');
 
         svg.append('g')
             .attr('transform', `translate(0,${height - margin.bottom})`)
