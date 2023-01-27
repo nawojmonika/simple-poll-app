@@ -7,7 +7,7 @@ export const PollResult = (): JSX.Element => {
 
     return (
         <section>
-            <Chart data={chartData} caption={question} />
+            <Chart data={chartData} caption={question} total={votes} />
             <span>Total votes: {votes}</span>
         </section>
     );
