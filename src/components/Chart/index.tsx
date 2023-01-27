@@ -33,39 +33,43 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
         const yAxis = d3.axisLeft(yScale).ticks(height / 40);
 
         const svg = d3.select(chartContainer.current).append('svg')
-            .attr("width", width)
-            .attr("height", height)
-            .attr("viewBox", [0, 0, width, height])
-            .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-        svg.append("g")
-            .attr("transform", `translate(${margin.left},0)`)
+            .attr('width', width)
+            .attr('height', height)
+            .attr('viewBox', [0, 0, width, height])
+            .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
+        svg.append('g')
+            .attr('transform', `translate(${margin.left},0)`)
             .call(yAxis)
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll(".tick line").clone()
-                .attr("x2", width - margin.left - margin.right)
-                .attr("stroke-opacity", 0.1))
-            .call(g => g.append("text")
-                .attr("x", -margin.left)
-                .attr("y", 10)
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "start"));
+            .call(g => g.select('.domain').remove())
+            .call(g => g.selectAll('.tick line').clone()
+                .attr('x2', width - margin.left - margin.right)
+                .attr('stroke-opacity', 0.1))
+            .call(g => g.append('text')
+                .attr('x', -margin.left)
+                .attr('y', 10)
+                .attr('fill', 'currentColor')
+                .attr('text-anchor', 'start'));
 
-        const bar = svg.append("g")
-            .attr("fill", 'red')
-            .selectAll("rect")
+        svg.append('g')
+            .attr('fill', 'red')
+            .selectAll('rect')
             .data(I)
-            .join("rect")
-            .attr("x", i => xScale(X[i]) || '')
-            .attr("y", i => yScale(Y[i]))
-            .attr("height", i => yScale(0) - yScale(Y[i]))
-            .attr("width", xScale.bandwidth());
+            .join('rect')
+            .attr('x', i => xScale(X[i]) || '')
+            .attr('y', i => yScale(Y[i]))
+            .attr('height', i => yScale(0) - yScale(Y[i]))
+            .attr('width', xScale.bandwidth());
 
-        bar.append("title")
-            .text(caption);
-
-        svg.append("g")
-            .attr("transform", `translate(0,${height - margin.bottom})`)
+        svg.append('g')
+            .attr('transform', `translate(0,${height - margin.bottom})`)
             .call(xAxis);
+
+        svg.append('text')
+            .attr('y', 15)
+            .attr('x', '50%')
+            .attr('text-anchor', 'middle')
+            .attr('font-size', 16)
+            .text(caption);
 
         return () => {
             d3.selectAll('svg').remove();
