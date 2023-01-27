@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Chart = ({ data, caption, total }: Props): JSX.Element => {
-    const chartContainer = useRef<HTMLDivElement>(null);
+    const chartContainer = useRef<SVGSVGElement>(null);
     const margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = 460 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom,
@@ -32,11 +32,7 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
         const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
         const yAxis = d3.axisLeft(yScale).ticks(height / 40);
 
-        const svg = d3.select(chartContainer.current).append('svg')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('viewBox', [0, 0, width, height])
-            .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
+        const svg = d3.select(chartContainer.current);
         svg.append('g')
             .attr('transform', `translate(${margin.left},0)`)
             .call(yAxis)
@@ -49,7 +45,6 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
                 .attr('y', 10)
                 .attr('fill', 'currentColor')
                 .attr('text-anchor', 'start'));
-        console.log(xScale.bandwidth())
         svg.append('g')
             .selectAll('rect')
             .data(I)
@@ -80,15 +75,9 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
             .attr('text-anchor', 'middle')
             .attr('font-size', 16)
             .text(caption);
-
-        return () => {
-            d3.selectAll('svg').remove();
-        };
-
     }, []);
 
-
     return (
-        <div ref={chartContainer} />
+        <svg ref={chartContainer} width={width} height={height} viewBox={`[0, 0, ${width}, ${height}]`} style={{ maxHeight: '100%', height: 'auto' }} ></svg>
     );
 };
