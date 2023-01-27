@@ -3,15 +3,14 @@ import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { Option } from '../OptionsContext';
 
-type CharData = Required<Pick<Option, 'value' | 'votes'>>
+type CharData = Required<Pick<Option, 'value' | 'votes'>>;
 
 type Props = {
     data: CharData[];
     caption: string;
-    total: number;
 };
 
-export const Chart = ({ data, caption, total }: Props): JSX.Element => {
+export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null);
     const margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = 460 - margin.left - margin.right,
@@ -24,13 +23,11 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
         const X = d3.map(data, d => d.value),
             Y = d3.map(data, d => d.votes),
             xDomain = new d3.InternSet(X),
-            yDomain = [0, Math.max(total, 10)],
-            I = d3.range(X.length).filter(i => xDomain.has(X[i]));
-
-        const xScale = d3.scaleBand(xDomain, xRange).padding(xPadding);
-        const yScale = d3.scaleLinear(yDomain, yRange);
-        const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-        const yAxis = d3.axisLeft(yScale).ticks(height / 40);
+            yDomain = [0, Math.max(d3.max(Y) || 0 + 5, 10)],
+            xScale = d3.scaleBand(xDomain, xRange).padding(xPadding),
+            yScale = d3.scaleLinear(yDomain, yRange),
+            xAxis = d3.axisBottom(xScale).tickSizeOuter(0),
+            yAxis = d3.axisLeft(yScale).ticks(height / 40);
 
         const svg = d3.select(chartContainer.current);
         svg.append('g')
@@ -45,25 +42,24 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
                 .attr('y', 10)
                 .attr('fill', 'currentColor')
                 .attr('text-anchor', 'start'));
+
         svg.append('g')
             .selectAll('rect')
-            .data(I)
+            .data(data)
             .join('rect')
-            .text('test')
-            .attr('fill', i => d3.schemeCategory10[i])
-            .attr('x', i => (xScale(X[i]) || 0))
-            .attr('y', i => yScale(Y[i]))
-            .attr('height', i => yScale(0) - yScale(Y[i]))
+            .attr('fill', (_, i) => d3.schemeCategory10[i])
+            .attr('x', d => (xScale(d.value) || 0))
+            .attr('y', d => yScale(d.votes))
+            .attr('height', d => yScale(0) - yScale(d.votes))
             .attr('width', xScale.bandwidth());
 
         svg.append("g")
             .selectAll("label")
-            .data(I)
+            .data(data)
             .join('text')
-            .text(i => Y[i])
-            .attr('x', i => (xScale(X[i]) || 0) + xScale.bandwidth() / 2)
-            .attr('y', i => yScale(Y[i]) - 5)
-            .attr('fill', 'black');
+            .text(d => d.votes)
+            .attr('x', d => (xScale(d.value) || 0) + (xScale.bandwidth() / 2) - 5)
+            .attr('y', d => yScale(d.votes) - 5);
 
         svg.append('g')
             .attr('transform', `translate(0,${height - margin.bottom})`)
@@ -75,6 +71,10 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
             .attr('text-anchor', 'middle')
             .attr('font-size', 16)
             .text(caption);
+
+        return () => {
+            d3.select('svg > *').remove();
+        };
     }, []);
 
     return (
