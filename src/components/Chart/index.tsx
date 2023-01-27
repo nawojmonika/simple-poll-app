@@ -51,10 +51,10 @@ export const Chart = ({ data, caption, total }: Props): JSX.Element => {
                 .attr('text-anchor', 'start'));
 
         svg.append('g')
-            .attr('fill', 'red')
             .selectAll('rect')
             .data(I)
             .join('rect')
+            .attr('fill', i => d3.schemeCategory10[i])
             .attr('x', i => xScale(X[i]) || '')
             .attr('y', i => yScale(Y[i]))
             .attr('height', i => yScale(0) - yScale(Y[i]))
