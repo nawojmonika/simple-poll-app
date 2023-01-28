@@ -1,0 +1,38 @@
+.button {
+    padding: 5px 10px;
+    margin-left: 8px;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: all ease-in-out 0.2s;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.primary {
+    background-color: hsl(204, 86%, 53%);
+}
+
+.primary:hover:not(:disabled) {
+    background-color: hsl(204, 86%, 45%);
+}
+
+.warning {
+    background-color: hsl(48, 100%, 67%);
+    color: #000;
+}
+
+.warning:hover:not(:disabled) {
+    background-color: hsl(48, 100%, 45%);
+}
+
+.danger {
+    background-color: hsl(348, 100%, 61%);
+}
+
+.danger:hover:not(:disabled) {
+    background-color: hsl(348, 100%, 45%);
+}

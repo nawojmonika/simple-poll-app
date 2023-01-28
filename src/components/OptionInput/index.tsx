@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TextInput, TextInputProps } from '../TextInput';
 import { Option } from '../OptionsContext';
+import { Button, ButtonProps } from '../Button';
 import styles from './OptionInput.module.css';
 
-type ButtonProps = {
-    content: string;
-    disabled: boolean;
-    onClick: (id: string, value: string) => void;
+type OptionButton = Omit<ButtonProps, 'onClick' | 'children'> & {
+    onClick?: (id: string, value: string) => void;
+    content?: React.ReactNode;
 };
 
 export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange' | 'onEnter'> & {
-    button?: Partial<ButtonProps>;
+    button?: OptionButton;
     disabled?: boolean;
     onChange?: (id: string, value: string) => void;
     onEnter?: (id: string, value: string) => void;
@@ -36,7 +36,7 @@ export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disable
     return (
         <div className={styles.option}>
             <TextInput placeholder={placeholder} value={value} onChange={handleTextChange} onEnter={handleEnter} disabled={disabled} />
-            <button className={styles.button} onClick={handleButtonClick} disabled={button?.disabled}>{button?.content ? button?.content : 'X'}</button>
+            <Button {...button} onClick={handleButtonClick}>{button?.content ? button?.content : 'X'}</Button>
         </div>
     );
 };
