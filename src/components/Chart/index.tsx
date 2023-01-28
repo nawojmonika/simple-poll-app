@@ -15,7 +15,7 @@ type GSelection = d3.Selection<SVGGElement, unknown, null, undefined>;
 
 type YScale = d3.ScaleLinear<number, number, never>;
 
-const getYScale = (data: ChartData[], yRange: number[]): YScale => d3.scaleLinear([0, Math.max(...data.map(d => (d.votes || 0) + 2), 10)], yRange);
+const getYScale = (data: ChartData[], yRange: number[]): YScale => d3.scaleLinear([0, Math.max(...data.map(d => (d.votes || 0) + 10), 10)], yRange);
 
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
@@ -38,12 +38,11 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
             yScale = getYScale(data, yRange);
         xAxis.current?.transition()
             .duration(duration)
-            .call(d3.axisBottom(xScale));
+            .call(d3.axisBottom(xScale).tickSizeOuter(0));
 
         yAxis.current?.transition()
             .duration(duration)
             .call(d3.axisLeft(getYScale(data, yRange))
-                .tickSizeOuter(0)
                 .ticks(height / 40));
 
         bars.current?.selectAll('rect')
