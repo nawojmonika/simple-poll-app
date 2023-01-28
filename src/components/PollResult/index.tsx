@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Chart, ChartData } from '../Chart';
 import { useOptionsContext } from '../OptionsContext';
+import styles from './PollResult.module.css';
+
 
 export const PollResult = (): JSX.Element => {
     const { votes, options, question, questionPlaceholder } = useOptionsContext();
@@ -9,7 +11,7 @@ export const PollResult = (): JSX.Element => {
     return (
         <section>
             <Chart data={chartData} caption={question || questionPlaceholder} />
-            <span>Total votes: {votes}</span>
+            <div className={styles.total}>Total votes: {votes}</div>
         </section>
     );
 };

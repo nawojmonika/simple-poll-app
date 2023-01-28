@@ -1,7 +1,8 @@
 
-import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
 import { Option } from '../OptionsContext';
+import styles from './Chart.module.css';
 
 export type ChartData = Required<Pick<Option, 'value' | 'votes'>>;
 
@@ -79,6 +80,8 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
     }, []);
 
     return (
-        <svg ref={chartContainer} width={width} height={height} viewBox={`[0, 0, ${width}, ${height}]`} style={{ maxHeight: '100%', height: 'auto' }} ></svg>
+        <div className={styles.container}>
+            <svg className={styles.content} ref={chartContainer} viewBox={`0, 0, ${width}, ${height}`} style={{ maxHeight: '100%', height: 'auto' }} ></svg>
+        </div>
     );
 };
