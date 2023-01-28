@@ -40,7 +40,11 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
             .duration(duration)
             .call(d3.axisBottom(xScale));
 
-        yAxis.current?.transition().duration(duration).call(d3.axisLeft(yScale).ticks(height / 40));
+        yAxis.current?.transition()
+            .duration(duration)
+            .call(d3.axisLeft(getYScale(data, yRange))
+                .tickSizeOuter(0)
+                .ticks(height / 40));
 
         bars.current?.selectAll('rect')
             .data(data)
@@ -68,15 +72,7 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
     useEffect(() => {
         svg.current = d3.select(chartContainer.current);
         xAxis.current = xAxis.current || svg.current.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
-        yAxis.current = yAxis.current || svg.current.append('g')
-            .attr('transform', `translate(${margin.left},0)`)
-            .call(d3.axisLeft(getYScale(data, yRange))
-                .tickSizeOuter(0)
-                .ticks(height / 40))
-            .call(g => g.select('.domain').remove())
-            .call(g => g.selectAll('.tick line').clone()
-                .attr('x2', width - margin.left - margin.right)
-                .attr('stroke-opacity', 0.1));
+        yAxis.current = yAxis.current || svg.current.append('g').attr('transform', `translate(${margin.left},0)`).call(g => g.select('.domain').remove());
         bars.current = bars.current || svg.current.append('g');
         labels.current = labels.current || svg.current.append('g');
         title.current = title.current || svg.current.append('text').attr('y', 15).attr('x', '50%').attr('text-anchor', 'middle').attr('font-size', 16);
