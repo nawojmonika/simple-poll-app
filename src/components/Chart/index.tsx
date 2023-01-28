@@ -10,6 +10,8 @@ type Props = {
     caption: string;
 };
 
+const getYScale = (data: ChartData[], yRange: number[]): d3.ScaleLinear<number, number, never> => d3.scaleLinear([0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)], yRange);
+
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
         svg = useRef<d3.Selection<SVGSVGElement | null, unknown, null, undefined>>(),
@@ -28,21 +30,13 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
     useEffect(() => {
         const xDomain = d3.map(data, d => d.value),
             xScale = d3.scaleBand(xDomain, xRange).padding(xPadding),
-            yScale = d3.scaleLinear([0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)], yRange);
+            yScale = getYScale(data, yRange);
 
         xAxis.current?.transition()
             .duration(duration)
-            .call(d3.axisBottom(xScale).tickSizeOuter(0));
+            .call(d3.axisBottom(xScale));
 
-        yAxis.current?.call(d3.axisLeft(yScale).ticks(height / 40))
-            .call(g => g.select('.domain').remove())
-            .call(g => g.selectAll('.tick line').clone()
-                .attr('x2', width - margin.left - margin.right)
-                .attr('stroke-opacity', 0.1))
-            .call(g => g.append('text')
-                .attr('x', -margin.left)
-                .attr('y', 10)
-                .attr('text-anchor', 'start'));
+        yAxis.current?.call(d3.axisLeft(yScale).ticks(height / 40));
 
         bars.current?.data(data)
             .join('rect')
@@ -60,7 +54,15 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
     useEffect(() => {
         svg.current = d3.select(chartContainer.current);
         xAxis.current = xAxis.current || svg.current.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
-        yAxis.current = yAxis.current || svg.current.append('g').attr('transform', `translate(${margin.left},0)`);
+        yAxis.current = yAxis.current || svg.current.append('g')
+            .attr('transform', `translate(${margin.left},0)`)
+            .call(d3.axisLeft(getYScale(data, yRange))
+                .tickSizeOuter(0)
+                .ticks(height / 40))
+            .call(g => g.select('.domain').remove())
+            .call(g => g.selectAll('.tick line').clone()
+                .attr('x2', width - margin.left - margin.right)
+                .attr('stroke-opacity', 0.1));
         bars.current = bars.current || svg.current.append('g').selectAll('rect');
         title.current = title.current || svg.current.append('text').attr('y', 15).attr('x', '50%').attr('text-anchor', 'middle').attr('font-size', 16);
 

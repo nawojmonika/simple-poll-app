@@ -4,8 +4,8 @@ import styles from './RadioButtonGroup.module.css';
 
 export const RadioButtonGroup = (): JSX.Element => {
     const [currentOptionId, setCurrentOptionId] = useState<string>('');
-    const { question, options, voteForOption } = useOptionsContext();
-    const header = question || 'What is the question?';
+    const { question, questionPlaceholder, options, voteForOption } = useOptionsContext();
+    const header = question || questionPlaceholder;
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setCurrentOptionId(event.target.id);
