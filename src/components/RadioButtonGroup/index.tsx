@@ -18,16 +18,18 @@ export const RadioButtonGroup = (): JSX.Element => {
 
     return (
         <section>
-            <h2>{header}</h2>
-            {options.map(({ id, value, placeholder }) => {
-                const inputValue = value || placeholder;
-                return (
-                    <div key={id} className={styles.radioInput} onChange={handleChange}>
-                        <input type='radio' name={header} id={id} value={inputValue} />
-                        <label htmlFor={id}>{inputValue}</label>
-                    </div>
-                );
-            })}
+            <div>
+                <h2>{header}</h2>
+                {options.map(({ id, value, placeholder }) => {
+                    const inputValue = value || placeholder;
+                    return (
+                        <div key={id} className={styles.radioInput} onChange={handleChange}>
+                            <input type='radio' name={header} id={id} value={inputValue} />
+                            <label htmlFor={id}>{inputValue}</label>
+                        </div>
+                    );
+                })}
+            </div>
             <Button className={styles.button} onClick={handleVote} disabled={currentOptionId.length === 0} big>Vote</Button>
         </section>
     );

@@ -12,7 +12,17 @@
 }
 
 .container>section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1 1 0;
   padding: 30px 20px;
-  border: solid 1px;
+  border-top: solid 1px hsl(0, 0%, 71%);
+  border-right: solid 1px hsl(0, 0%, 71%);
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
 }
