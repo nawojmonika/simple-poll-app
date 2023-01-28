@@ -29,12 +29,11 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         height = 400 - margin.top - margin.bottom,
         xRange = [margin.left, width - margin.right],
         yRange = [height - margin.bottom, margin.top],
-        xPadding = 0.1,
         duration = 500;
 
     useEffect(() => {
         const xDomain = d3.map(data, d => d.value),
-            xScale = d3.scaleBand(xDomain, xRange).padding(xPadding),
+            xScale = d3.scaleBand(xDomain, xRange),
             yScale = getYScale(data, yRange);
         xAxis.current?.transition()
             .duration(duration)
