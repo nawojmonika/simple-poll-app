@@ -15,12 +15,12 @@ const defaultOptions: Option[] = [
     {
         id: uuidv4(),
         placeholder: 'First option',
-        votes: 0,
+        votes: 5,
     },
     {
         id: uuidv4(),
         placeholder: 'Second option',
-        votes: 0,
+        votes: 2,
     },
 ];
 
