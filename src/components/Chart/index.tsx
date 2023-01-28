@@ -15,17 +15,6 @@ type XScale = d3.ScaleBand<string> | undefined;
 type YScale = d3.ScaleLinear<number, number, never> | undefined;
 
 const getYDomain = (data: ChartData[]): number[] => [0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)];
-const updateBars = (bars: React.MutableRefObject<Bars>, data: ChartData[], xScale: React.MutableRefObject<XScale>, yScale: React.MutableRefObject<YScale>, duration = 1000): void => {
-    bars.current?.data(data)
-        .join('rect')
-        .attr('x', d => (xScale.current?.(d.value) || 0))
-        .attr('y', d => yScale.current?.(d.votes) || 0)
-        .attr('width', xScale.current?.bandwidth() || 0)
-        .attr('height', d => (yScale.current?.(0) || 0) - (yScale.current?.(d.votes) || 0))
-        .transition()
-        .duration(duration)
-        .attr('fill', (_, i) => d3.schemeCategory10[i])
-}
 
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
@@ -49,8 +38,16 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         yScale.current?.domain(getYDomain(data));
         // yAxis.current?.transition().duration(duration).call(d3.axisLeft(yScale.current!!));
 
-        updateBars(bars, data, xScale, yScale);
-    }, [data])
+        bars.current?.data(data)
+            .join('rect')
+            .attr('x', d => (xScale.current?.(d.value) || 0))
+            .attr('y', d => yScale.current?.(d.votes) || 0)
+            .attr('width', xScale.current?.bandwidth() || 0)
+            .attr('height', d => (yScale.current?.(0) || 0) - (yScale.current?.(d.votes) || 0))
+            .transition()
+            .duration(duration)
+            .attr('fill', (_, i) => d3.schemeCategory10[i]);
+    }, [data]);
 
     useEffect(() => {
         svg.current = d3.select(chartContainer.current);
@@ -73,9 +70,6 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
                 .attr('text-anchor', 'start'));
 
         bars.current = svg.current?.append('g').selectAll('rect');
-
-        updateBars(bars, data, xScale, yScale);
-
 
         // svg.current?.append("g")
         //     .selectAll("label")
