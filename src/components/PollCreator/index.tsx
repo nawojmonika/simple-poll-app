@@ -20,7 +20,7 @@ export const PollCreator = (): JSX.Element => {
     };
 
     return (
-        <section>
+        <section className={styles.container}>
             <TextInput placeholder={questionPlaceholder} value={question} onChange={setQuestion} />
             <div className={styles.optionList}>
                 {options.map((option) => <OptionInput key={option.id} {...option} onChange={changeOption} button={{ disabled: disableRemoval, onClick: removeOption }} />)}

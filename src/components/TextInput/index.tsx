@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import styles from './TextInput.module.css';
 
 export type TextInputProps = {
     placeholder?: string;
@@ -24,5 +25,5 @@ export const TextInput = ({ placeholder, value = '', disabled = false, onChange 
         setText(value);
     }, [value]);
 
-    return <input placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} maxLength={80} />
+    return <input className={styles.input} placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} maxLength={80} />
 };
