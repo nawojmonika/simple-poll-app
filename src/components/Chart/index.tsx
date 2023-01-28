@@ -10,18 +10,13 @@ type Props = {
     caption: string;
 };
 
-type Bars = d3.Selection<d3.BaseType | SVGRectElement, ChartData, SVGGElement, unknown> | undefined;
-type YScale = d3.ScaleLinear<number, number, never> | undefined;
-
-const getYDomain = (data: ChartData[]): number[] => [0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)];
-
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
         svg = useRef<d3.Selection<SVGSVGElement | null, unknown, null, undefined>>(),
         xAxis = useRef<d3.Selection<SVGGElement, unknown, null, undefined>>(),
         yAxis = useRef<d3.Selection<SVGGElement, unknown, null, undefined>>(),
-        yScale = useRef<YScale>(),
-        bars = useRef<Bars>(),
+        bars = useRef<d3.Selection<d3.BaseType | SVGRectElement, ChartData, SVGGElement, unknown> | undefined>(),
+        title = useRef<d3.Selection<SVGTextElement, unknown, null, undefined>>(),
         margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = 460 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom,
@@ -31,35 +26,15 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         duration = 1000;
 
     useEffect(() => {
-        const xDomain = d3.map(data, d => d.value);
-        const xScale = d3.scaleBand(xDomain, xRange).padding(xPadding);
-        xScale.domain(xDomain);
+        const xDomain = d3.map(data, d => d.value),
+            xScale = d3.scaleBand(xDomain, xRange).padding(xPadding),
+            yScale = d3.scaleLinear([0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)], yRange);
+
         xAxis.current?.transition()
             .duration(duration)
-            .call(d3.axisBottom(xScale).tickSizeOuter(0))
-        // yScale.current?.domain(getYDomain(data));
-        // yAxis.current?.transition().duration(duration).call(d3.axisLeft(yScale.current!!));
+            .call(d3.axisBottom(xScale).tickSizeOuter(0));
 
-        bars.current?.data(data)
-            .join('rect')
-            .attr('x', d => (xScale?.(d.value) || 0))
-            .attr('y', d => yScale.current?.(d.votes) || 0)
-            .attr('fill', (_, i) => d3.schemeCategory10[i])
-            .attr('width', xScale?.bandwidth() || 0)
-            .attr('height', d => (yScale.current?.(0) || 0) - (yScale.current?.(d.votes) || 0))
-        // .transition()
-        // .duration(duration)
-    }, [data]);
-
-    useEffect(() => {
-        svg.current = d3.select(chartContainer.current);
-        xAxis.current = svg.current.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
-
-
-        yScale.current = d3.scaleLinear(getYDomain(data), yRange);
-        yAxis.current = svg.current?.append('g')
-            .attr('transform', `translate(${margin.left},0)`)
-            .call(d3.axisLeft(yScale.current).ticks(height / 40))
+        yAxis.current?.call(d3.axisLeft(yScale).ticks(height / 40))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
                 .attr('x2', width - margin.left - margin.right)
@@ -69,7 +44,25 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
                 .attr('y', 10)
                 .attr('text-anchor', 'start'));
 
-        bars.current = svg.current?.append('g').selectAll('rect');
+        bars.current?.data(data)
+            .join('rect')
+            .attr('x', d => (xScale?.(d.value) || 0))
+            .attr('y', d => yScale?.(d.votes) || 0)
+            .attr('fill', (_, i) => d3.schemeCategory10[i])
+            .attr('width', xScale?.bandwidth() || 0)
+            .attr('height', d => (yScale?.(0) || 0) - (yScale?.(d.votes) || 0))
+        // .transition()
+        // .duration(duration)
+
+        title.current?.html(caption)
+    }, [data, caption]);
+
+    useEffect(() => {
+        svg.current = d3.select(chartContainer.current);
+        xAxis.current = xAxis.current || svg.current.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
+        yAxis.current = yAxis.current || svg.current.append('g').attr('transform', `translate(${margin.left},0)`);
+        bars.current = bars.current || svg.current.append('g').selectAll('rect');
+        title.current = title.current || svg.current.append('text').attr('y', 15).attr('x', '50%').attr('text-anchor', 'middle').attr('font-size', 16);
 
         // svg.current?.append("g")
         //     .selectAll("label")
@@ -77,18 +70,8 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         //     .join('text')
         //     .text(d => d.votes)
         //     .attr('x', d => (xScale?.(d.value) || 0) + ((xScale?.bandwidth() || 0) / 2) - 5)
-        //     .attr('y', d => (yScale.current?.(d.votes) || 0) - 5);
+        //     .attr('y', d => (yScale?.(d.votes) || 0) - 5);
 
-        svg.current?.append('text')
-            .attr('y', 15)
-            .attr('x', '50%')
-            .attr('text-anchor', 'middle')
-            .attr('font-size', 16)
-            .text(caption);
-
-        return () => {
-            d3.select('svg > *').remove();
-        };
     }, []);
 
     return (
