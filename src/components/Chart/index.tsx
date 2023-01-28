@@ -10,7 +10,9 @@ type Props = {
     caption: string;
 };
 
-const getYScale = (data: ChartData[], yRange: number[]): d3.ScaleLinear<number, number, never> => d3.scaleLinear([0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)], yRange);
+type YScale = d3.ScaleLinear<number, number, never>;
+
+const getYScale = (data: ChartData[], yRange: number[]): YScale => d3.scaleLinear([0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)], yRange);
 
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
@@ -18,6 +20,7 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         xAxis = useRef<d3.Selection<SVGGElement, unknown, null, undefined>>(),
         yAxis = useRef<d3.Selection<SVGGElement, unknown, null, undefined>>(),
         bars = useRef<d3.Selection<d3.BaseType | SVGRectElement, ChartData, SVGGElement, unknown> | undefined>(),
+        labels = useRef<d3.Selection<SVGGElement, unknown, null, undefined>>(),
         title = useRef<d3.Selection<SVGTextElement, unknown, null, undefined>>(),
         margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = 460 - margin.left - margin.right,
@@ -48,6 +51,15 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         // .transition()
         // .duration(duration)
 
+        const labelTexts = labels.current?.selectAll('text').data(data);
+
+        labelTexts?.empty() ?
+            labelTexts?.join('text')
+                .text(d => d.votes)
+                .attr('x', d => (xScale?.(d.value) || 0) + ((xScale?.bandwidth() || 0) / 2) - 5)
+                .attr('y', d => (yScale?.(d.votes) || 0) - 5)
+            : labelTexts?.html(d => String(d.votes)).attr('y', d => (yScale?.(d.votes) || 0) - 5)
+
         title.current?.html(caption)
     }, [data, caption]);
 
@@ -64,15 +76,8 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
                 .attr('x2', width - margin.left - margin.right)
                 .attr('stroke-opacity', 0.1));
         bars.current = bars.current || svg.current.append('g').selectAll('rect');
+        labels.current = labels.current || svg.current.append('g');
         title.current = title.current || svg.current.append('text').attr('y', 15).attr('x', '50%').attr('text-anchor', 'middle').attr('font-size', 16);
-
-        // svg.current?.append("g")
-        //     .selectAll("label")
-        //     .data(data)
-        //     .join('text')
-        //     .text(d => d.votes)
-        //     .attr('x', d => (xScale?.(d.value) || 0) + ((xScale?.bandwidth() || 0) / 2) - 5)
-        //     .attr('y', d => (yScale?.(d.votes) || 0) - 5);
 
     }, []);
 
