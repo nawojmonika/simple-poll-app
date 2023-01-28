@@ -29,7 +29,7 @@ export const PollCreator = (): JSX.Element => {
             </div>
             <div className={styles.footer}>
                 <span>{options.length} / {maxOptions} possible answers</span>
-                <Button type={'warning'} onClick={resetOptions}>Reset</Button>
+                <Button type={'warning'} onClick={resetOptions} big>Reset</Button>
             </div>
         </section>
     );

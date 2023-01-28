@@ -11,6 +11,10 @@
     cursor: not-allowed;
 }
 
+.big {
+    padding: 10px 25px;
+}
+
 .primary {
     background-color: hsl(204, 86%, 53%);
 }

@@ -1,16 +1,16 @@
 import { clsx } from 'clsx';
 import styles from './Button.module.css';
 
-export type ButtonType = 'primary' | 'danger' | 'warning';
 
 export type ButtonProps = {
-    type?: ButtonType;
+    type?: 'primary' | 'danger' | 'warning';
+    big?: boolean;
     className?: string;
     children: React.ReactNode;
     disabled?: boolean;
     onClick: () => void;
 };
 
-export const Button = ({ type = 'primary', className, children, onClick, disabled = false }: ButtonProps): JSX.Element => {
-    return <button className={clsx(styles.button, styles[type], className)} onClick={onClick} disabled={disabled}>{children}</button>
+export const Button = ({ type = 'primary', big = false, className, children, onClick, disabled = false }: ButtonProps): JSX.Element => {
+    return <button className={clsx(styles.button, styles[type], big && styles.big, className)} onClick={onClick} disabled={disabled}>{children}</button>
 }
