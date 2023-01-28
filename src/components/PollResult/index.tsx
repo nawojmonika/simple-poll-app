@@ -1,9 +1,10 @@
-import { Chart } from '../Chart';
+import { useMemo, useState } from 'react';
+import { Chart, ChartData } from '../Chart';
 import { useOptionsContext } from '../OptionsContext';
 
 export const PollResult = (): JSX.Element => {
     const { votes, options, question } = useOptionsContext();
-    const chartData = options.map((option) => ({ ...option, value: option.placeholder || option.value || '' }));
+    const chartData = useMemo<ChartData[]>(() => options.map((option) => ({ ...option, value: option.value || option.placeholder || '' })), [options]);
 
     return (
         <section>

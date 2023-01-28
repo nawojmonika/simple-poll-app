@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
 import { Option } from '../OptionsContext';
 
-type ChartData = Required<Pick<Option, 'value' | 'votes'>>;
+export type ChartData = Required<Pick<Option, 'value' | 'votes'>>;
 
 type Props = {
     data: ChartData[];
@@ -15,6 +15,7 @@ type XScale = d3.ScaleBand<string> | undefined;
 type YScale = d3.ScaleLinear<number, number, never> | undefined;
 
 const getYDomain = (data: ChartData[]): number[] => [0, Math.max(d3.max(d3.map(data, d => d.votes)) || 0 + 5, 10)];
+const getXDomain = (data: ChartData[]): string[] => d3.map(data, d => d.value);
 
 export const Chart = ({ data, caption }: Props): JSX.Element => {
     const chartContainer = useRef<SVGSVGElement>(null),
@@ -35,7 +36,7 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
     useEffect(() => {
         xScale.current?.domain(d3.map(data, d => d.value));
         xAxis.current?.transition().duration(duration).call(d3.axisBottom(xScale.current!!));
-        yScale.current?.domain(getYDomain(data));
+        // yScale.current?.domain(getYDomain(data));
         // yAxis.current?.transition().duration(duration).call(d3.axisLeft(yScale.current!!));
 
         bars.current?.data(data)
@@ -51,7 +52,7 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
 
     useEffect(() => {
         svg.current = d3.select(chartContainer.current);
-        xScale.current = d3.scaleBand(d3.map(data, d => d.value), xRange).padding(xPadding);
+        xScale.current = d3.scaleBand(getXDomain(data), xRange).padding(xPadding);
         xAxis.current = svg.current.append('g')
             .attr('transform', `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(xScale.current).tickSizeOuter(0));
