@@ -5,7 +5,7 @@ import { useOptionsContext } from '../OptionsContext';
 import styles from './PollCreator.module.css';
 
 export const PollCreator = (): JSX.Element => {
-    const { question, options, minOptions, maxOptions, setQuestion, removeOption, addOption, changeOption, resetOptions } = useOptionsContext();
+    const { question, questionPlaceholder, options, minOptions, maxOptions, setQuestion, removeOption, addOption, changeOption, resetOptions } = useOptionsContext();
     const [optionText, setOptionText] = useState<string>('');
     const disableAddition = optionText.length === 0 || options.length === maxOptions;
     const disableRemoval = options.length === minOptions;
@@ -21,7 +21,7 @@ export const PollCreator = (): JSX.Element => {
 
     return (
         <section>
-            <TextInput placeholder='What is the question?' value={question} onChange={setQuestion} />
+            <TextInput placeholder={questionPlaceholder} value={question} onChange={setQuestion} />
             <div className={styles.optionList}>
                 {options.map((option) => <OptionInput key={option.id} {...option} onChange={changeOption} button={{ disabled: disableRemoval, onClick: removeOption }} />)}
                 <OptionInput placeholder='Type an answer' value={optionText} onChange={handleOptionTextChange} button={{ content: 'Add', disabled: disableAddition, onClick: handleAddOption }} />

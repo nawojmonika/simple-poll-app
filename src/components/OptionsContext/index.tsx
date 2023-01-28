@@ -14,18 +14,19 @@ export type Option = {
 const defaultOptions: Option[] = [
     {
         id: uuidv4(),
-        placeholder: 'First option',
+        placeholder: 'To be',
         votes: 5,
     },
     {
         id: uuidv4(),
-        placeholder: 'Second option',
+        placeholder: 'Not to be',
         votes: 2,
     },
 ];
 
 type OptionsContextData = {
     question: string;
+    questionPlaceholder: string;
     minOptions: number;
     maxOptions: number;
     options: Option[];
@@ -47,6 +48,7 @@ export const OptionsContext = createContext<OptionsContextData>({
     minOptions: 0,
     maxOptions: 0,
     question: '',
+    questionPlaceholder: '',
     votes: 0,
     setQuestion: () => undefined,
     addOption: () => undefined,
@@ -88,7 +90,7 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
     };
 
     return (
-        <OptionsContext.Provider value={{ question, options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
+        <OptionsContext.Provider value={{ question, questionPlaceholder: 'What is the question?', options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
             {children}
         </OptionsContext.Provider>
     );
