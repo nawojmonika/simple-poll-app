@@ -27,7 +27,7 @@ export const PollCreator = (): JSX.Element => {
                 {options.map((option) => <OptionInput key={option.id} {...option} onChange={changeOption} button={{ type: 'danger', disabled: disableRemoval, onClick: removeOption }} />)}
                 <OptionInput placeholder='Type an answer' value={optionText} onChange={handleOptionTextChange} onEnter={handleAddOption} button={{ content: 'Add', disabled: disableAddition, onClick: handleAddOption }} />
             </div>
-            <div>
+            <div className={styles.footer}>
                 <span>{options.length} / {maxOptions} possible answers</span>
                 <Button type={'warning'} onClick={resetOptions}>Reset</Button>
             </div>
