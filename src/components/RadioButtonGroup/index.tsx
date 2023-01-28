@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react';
+import { Button } from '../Button';
 import { useOptionsContext } from '../OptionsContext';
 import styles from './RadioButtonGroup.module.css';
 
@@ -27,7 +28,7 @@ export const RadioButtonGroup = (): JSX.Element => {
                     </div>
                 );
             })}
-            <button onClick={handleVote} disabled={currentOptionId.length === 0}>Vote</button>
+            <Button className={styles.button} onClick={handleVote} disabled={currentOptionId.length === 0} big>Vote</Button>
         </section>
     );
 }
