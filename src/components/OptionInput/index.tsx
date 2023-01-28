@@ -6,17 +6,18 @@ import styles from './OptionInput.module.css';
 
 type ButtonProps = {
     content: string;
-    onClick: (id: string, value: string) => void;
     disabled: boolean;
-}
+    onClick: (id: string, value: string) => void;
+};
 
-export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange'> & {
+export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange' | 'onEnter'> & {
     button?: Partial<ButtonProps>;
     disabled?: boolean;
     onChange?: (id: string, value: string) => void;
+    onEnter?: (id: string, value: string) => void;
 };
 
-export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disabled = false, onChange }: OptionProps): JSX.Element => {
+export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disabled = false, onChange, onEnter }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
 
     const handleButtonClick = (): void => {
@@ -28,9 +29,13 @@ export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disable
         onChange && onChange(id, value);
     };
 
+    const handleEnter = (value: string): void => {
+        onEnter && onEnter(id, value);
+    };
+
     return (
         <div className={styles.option}>
-            <TextInput placeholder={placeholder} onChange={handleTextChange} value={value} disabled={disabled} />
+            <TextInput placeholder={placeholder} value={value} onChange={handleTextChange} onEnter={handleEnter} disabled={disabled} />
             <button className={styles.button} onClick={handleButtonClick} disabled={button?.disabled}>{button?.content ? button?.content : 'X'}</button>
         </div>
     );
