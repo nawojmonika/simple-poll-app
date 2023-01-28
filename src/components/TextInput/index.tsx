@@ -1,8 +1,10 @@
+import { clsx } from 'clsx';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import styles from './TextInput.module.css';
 
 export type TextInputProps = {
+    className?: string;
     placeholder?: string;
     value?: string;
     disabled?: boolean;
@@ -10,7 +12,7 @@ export type TextInputProps = {
     onEnter?: (value: string) => void;
 };
 
-export const TextInput = ({ placeholder, value = '', disabled = false, onChange, onEnter }: TextInputProps): JSX.Element => {
+export const TextInput = ({ className, placeholder, value = '', disabled = false, onChange, onEnter }: TextInputProps): JSX.Element => {
     const [text, setText] = useState<string>(value);
     const [currentValue] = useDebounce(text, 300);
 
@@ -32,5 +34,5 @@ export const TextInput = ({ placeholder, value = '', disabled = false, onChange,
         setText(value);
     }, [value]);
 
-    return <input className={styles.input} placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} onKeyDown={handleKeyDown} maxLength={80} />
+    return <input className={clsx(styles.input, className)} placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} onKeyDown={handleKeyDown} maxLength={80} />
 };

@@ -3,6 +3,10 @@
     margin-top: 10px;
 }
 
+.input {
+    flex-grow: 1;
+}
+
 .button {
     margin-left: 8px;
 }

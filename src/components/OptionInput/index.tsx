@@ -35,8 +35,8 @@ export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disable
 
     return (
         <div className={styles.option}>
-            <TextInput placeholder={placeholder} value={value} onChange={handleTextChange} onEnter={handleEnter} disabled={disabled} />
-            <Button {...button} onClick={handleButtonClick}>{button?.content ? button?.content : 'X'}</Button>
+            <TextInput className={styles.input} placeholder={placeholder} value={value} onChange={handleTextChange} onEnter={handleEnter} disabled={disabled} />
+            <Button className={styles.button} {...button} onClick={handleButtonClick}>{button?.content ? button?.content : 'X'}</Button>
         </div>
     );
 };
