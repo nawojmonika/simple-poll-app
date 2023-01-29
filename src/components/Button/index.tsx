@@ -3,12 +3,12 @@ import styles from './Button.module.css';
 
 
 export type ButtonProps = {
-    type?: 'primary' | 'danger' | 'warning';
+    type?: 'primary' | 'warning' | 'danger';
     big?: boolean;
     className?: string;
     children: React.ReactNode;
     disabled?: boolean;
-    onClick: () => void;
+    onClick?: () => void;
 };
 
 export const Button = ({ type = 'primary', big = false, className, children, onClick, disabled = false }: ButtonProps): JSX.Element => {
