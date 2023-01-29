@@ -16,8 +16,10 @@ export const PollCreator = (): JSX.Element => {
     };
 
     const handleAddOption = (id: string, value: string): void => {
-        addOption(id, value);
-        setOptionText('');
+        if (!disableAddition) {
+            addOption(id, value);
+            setOptionText('');
+        }
     };
 
     return (
