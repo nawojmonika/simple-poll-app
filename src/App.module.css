@@ -1,8 +1,11 @@
 .App {
-  text-align: center;
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+.header {
+  padding: 20px;
 }
 
 .container {

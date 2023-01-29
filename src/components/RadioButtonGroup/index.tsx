@@ -19,7 +19,7 @@ export const RadioButtonGroup = (): JSX.Element => {
     return (
         <section>
             <div>
-                <h2>{header}</h2>
+                <h2 className={styles.header}>{header}</h2>
                 {options.map(({ id, value, placeholder }) => {
                     const inputValue = value || placeholder;
                     return (

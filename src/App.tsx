@@ -8,8 +8,8 @@ import { RadioButtonGroup } from './components/RadioButtonGroup';
 function App() {
   return (
     <div className={styles.App}>
-      <header>
-        <h1>To do: a pun title</h1>
+      <header className={styles.header}>
+        <h1>Sir Vote-a-lot</h1>
       </header>
       <OptionsWrapper>
         <main className={styles.container}>
