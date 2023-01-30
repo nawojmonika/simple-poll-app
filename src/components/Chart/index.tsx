@@ -54,7 +54,7 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
             .attr('y', d => yScale?.(d.votes) || 0)
             .attr('fill', (_, i) => d3.schemeCategory10[i])
             .attr('width', xScale?.bandwidth() || 0)
-            .attr('height', d => (yScale?.(0) || 0) - (yScale?.(d.votes) || 0))
+            .attr('height', d => (yScale?.(0) || 0) - (yScale?.(d.votes) || 0));
 
         labels.current?.selectAll('text')
             .data(data)
@@ -63,9 +63,9 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
             .duration(duration)
             .text(d => d.votes)
             .attr('x', d => (xScale?.(d.value) || 0) + ((xScale?.bandwidth() || 0) / 2) - 5)
-            .attr('y', d => (yScale?.(d.votes) || 0) - 5)
+            .attr('y', d => (yScale?.(d.votes) || 0) - 5);
 
-        title.current?.html(caption)
+        title.current?.html(caption);
     }, [data, caption]);
 
     useEffect(() => {
@@ -75,12 +75,11 @@ export const Chart = ({ data, caption }: Props): JSX.Element => {
         bars.current = bars.current || svg.current.append('g');
         labels.current = labels.current || svg.current.append('g');
         title.current = title.current || svg.current.append('text').attr('y', 15).attr('x', '50%').attr('text-anchor', 'middle').attr('font-size', 16);
-
     }, []);
 
     return (
         <div className={styles.container}>
-            <svg className={styles.content} ref={chartContainer} viewBox={`0, 0, ${width}, ${height}`} style={{ maxHeight: '100%', height: 'auto' }} ></svg>
+            <svg className={styles.content} ref={chartContainer} viewBox={`0, 0, ${width}, ${height}`} style={{ maxHeight: '100%', height: 'auto' }} />
         </div>
     );
 };
