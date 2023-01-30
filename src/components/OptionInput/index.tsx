@@ -10,7 +10,7 @@ type OptionButton = Omit<ButtonProps, 'onClick' | 'children'> & {
     content?: React.ReactNode;
 };
 
-export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange' | 'onEnter'> & {
+export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange' | 'onEnter' | 'className' | 'maxLength'> & {
     button?: OptionButton;
     disabled?: boolean;
     onChange?: (id: string, value: string) => void;
