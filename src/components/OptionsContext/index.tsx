@@ -13,7 +13,6 @@ type OptionsContextData = {
     minOptions: number;
     maxOptions: number;
     options: Option[];
-    votes: number;
     setQuestion: (value: string) => void;
     addOption: (id: string, value: string) => void;
     changeOption: (id: string, value: string) => void;
@@ -36,7 +35,6 @@ export const OptionsContext = createContext<OptionsContextData>({
     maxOptions: 0,
     question: '',
     questionPlaceholder: '',
-    votes: 0,
     setQuestion: () => undefined,
     addOption: () => undefined,
     changeOption: () => undefined,
@@ -48,7 +46,6 @@ export const OptionsContext = createContext<OptionsContextData>({
 export const OptionsWrapper = ({ children, defaultOptions, minOptions = 2, maxOptions = 10, questionPlaceholder = 'What is the question?' }: OptionsContextProps): JSX.Element => {
     const [question, setQuestion] = useState<string>('');
     const [options, setOptions] = useState<Option[]>(defaultOptions);
-    const [votes, setVotes] = useState<number>(0);
 
     const addOption = (id: string, value: string): void => {
         options.length < maxOptions && setOptions([...options, { id, value, votes: 0 }]);
@@ -68,18 +65,16 @@ export const OptionsWrapper = ({ children, defaultOptions, minOptions = 2, maxOp
 
     const resetOptions = (): void => {
         setQuestion('');
-        setVotes(0);
         setOptions(defaultOptions);
     };
 
     const voteForOption = (id: string): void => {
         const mappedOptions = options.map((option) => ({ ...option, votes: option.id === id ? option.votes + 1 : option.votes }));
         setOptions(mappedOptions);
-        setVotes(votes + 1);
     };
 
     return (
-        <OptionsContext.Provider value={{ question, questionPlaceholder, options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
+        <OptionsContext.Provider value={{ question, questionPlaceholder, options, minOptions, maxOptions, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
             {children}
         </OptionsContext.Provider>
     );
