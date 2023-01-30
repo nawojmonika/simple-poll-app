@@ -1,16 +1,7 @@
-.header {
-    margin-top: 0;
-}
-
-.radioInput {
+.input {
     display: flex;
 }
 
-.radioInput>* {
+.input>* {
     cursor: pointer;
-}
-
-.button {
-    display: block;
-    margin-left: auto;
 }

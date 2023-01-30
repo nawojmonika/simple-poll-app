@@ -2,7 +2,7 @@ import React from 'react';
 import { PollResult } from './components/PollResult';
 import { OptionsWrapper, Option } from './components/OptionsContext';
 import { PollCreator } from './components/PollCreator';
-import { RadioButtonGroup } from './components/RadioButtonGroup';
+import { PollVoter } from './components/PollVoter';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './App.module.css';
 
@@ -29,7 +29,7 @@ function App() {
       <OptionsWrapper defaultOptions={defaultOptions}>
         <main className={styles.container}>
           <PollCreator />
-          <RadioButtonGroup />
+          <PollVoter />
           <PollResult />
         </main>
       </OptionsWrapper>
