@@ -8,9 +8,10 @@ export type ButtonProps = {
     className?: string;
     children: React.ReactNode;
     disabled?: boolean;
+    testId?: string;
     onClick?: () => void;
 };
 
-export const Button = ({ type = 'primary', big = false, className, children, onClick, disabled = false }: ButtonProps): JSX.Element => {
-    return <button className={clsx(styles.button, styles[type], big && styles.big, className)} onClick={onClick} disabled={disabled}>{children}</button>
+export const Button = ({ className, children, onClick, type = 'primary', big = false, disabled = false, testId = '' }: ButtonProps): JSX.Element => {
+    return <button data-testid={testId} className={clsx(styles.button, styles[type], big && styles.big, className)} onClick={onClick} disabled={disabled}>{children}</button>
 }

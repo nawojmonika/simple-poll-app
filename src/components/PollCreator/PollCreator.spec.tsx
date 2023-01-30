@@ -16,9 +16,58 @@ const defaultOptions: Option[] = [
     },
 ];
 
-const setUp = (props?: Omit<OptionsContextProps, 'children' | 'defaultOptions'>): void => {
+const maxOptions = [
+    {
+        id: '1',
+        placeholder: 'Option 1',
+        votes: 0,
+    },
+    {
+        id: '2',
+        placeholder: 'Option 2',
+        votes: 0,
+    }, {
+        id: '3',
+        placeholder: 'Option 3',
+        votes: 0,
+    },
+    {
+        id: '4',
+        placeholder: 'Option 4',
+        votes: 0,
+    }, {
+        id: '5',
+        placeholder: 'Option 5',
+        votes: 0,
+    },
+    {
+        id: '6',
+        placeholder: 'Option 6',
+        votes: 0,
+    }, {
+        id: '7',
+        placeholder: 'Option 7',
+        votes: 0,
+    },
+    {
+        id: '8',
+        placeholder: 'Option 8',
+        votes: 0,
+    }, {
+        id: '9',
+        placeholder: 'Option 9',
+        votes: 0,
+    },
+    {
+        id: '10',
+        placeholder: 'Option 10',
+        votes: 0,
+    },
+];
+
+const setUp = (props?: Omit<OptionsContextProps, 'children' | 'defaultOptions'>, options: Option[] = defaultOptions): void => {
     render(
-        <OptionsWrapper defaultOptions={defaultOptions} {...props}>
+        <OptionsWrapper defaultOptions={options} {...props}>
             <PollCreator />
         </OptionsWrapper>
     );
@@ -110,6 +159,105 @@ describe('PollCreator tests', () => {
             const options = screen.getAllByTestId('poll-creator-option');
             expect(options.length).toBe(2);
         });
+    });
+    test('Option can be removed when number of options is greater than minOptions', () => {
+        setUp();
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const optionContent = 'new option';
+        const input = getByRole(addOption, 'textbox');
+        userEvent.type(input, optionContent);
+        fireEvent.keyDown(input, { key: 'Enter' });
+        const option1 = screen.getAllByTestId('poll-creator-option')[0];
+        const removeButton = getByRole(option1, 'button');
+        userEvent.click(removeButton);
+        waitFor(() => {
+            const options = screen.getAllByTestId('poll-creator-option');
+            expect(options.length).toBe(2);
+        });
+    });
+    test('Counter shows current number of options', () => {
+        setUp();
+        const counter = screen.getByText('2 / 10 possible answers');
+        expect(counter).toBeInTheDocument();
+    });
+    test('Counter updates value after adding new option', () => {
+        setUp();
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const optionContent = 'new option';
+        const input = getByRole(addOption, 'textbox');
+        userEvent.type(input, optionContent);
+        fireEvent.keyDown(input, { key: 'Enter' });
+        waitFor(() => {
+            const counter = screen.getByText('3 / 10 possible answers');
+            expect(counter).toBeInTheDocument();
+        });
+    });
+    test('Reset button removes changes on default options', () => {
+        setUp();
+        const option1 = screen.getByPlaceholderText(defaultOptions[0].placeholder as string);
+        const option2 = screen.getByPlaceholderText(defaultOptions[1].placeholder as string);
+        userEvent.type(option1, 'Updated value');
+        userEvent.type(option2, 'Another value');
+        const reset = screen.getByTestId('poll-creator-reset');
+        userEvent.click(reset);
+        waitFor(() => {
+            const option1 = screen.getByPlaceholderText(defaultOptions[0].placeholder as string);
+            const option2 = screen.getByPlaceholderText(defaultOptions[1].placeholder as string);
+            expect(option1).toHaveValue('');
+            expect(option2).toHaveValue('');
+        });
+    });
+    test('Reset button removes added options', () => {
+        setUp();
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const optionContent = 'new option';
+        const input = getByRole(addOption, 'textbox');
+        userEvent.type(input, optionContent);
+        fireEvent.keyDown(input, { key: 'Enter' });
+        const reset = screen.getByTestId('poll-creator-reset');
+        userEvent.click(reset);
+        waitFor(() => {
+            const options = screen.getAllByTestId('poll-creator-option');
+            expect(options.length).toBe(2);
+        });
+    });
+    test('Counter updates after reset', () => {
+        setUp();
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const optionContent = 'new option';
+        const input = getByRole(addOption, 'textbox');
+        userEvent.type(input, optionContent);
+        fireEvent.keyDown(input, { key: 'Enter' });
+        const reset = screen.getByTestId('poll-creator-reset');
+        userEvent.click(reset);
+        waitFor(() => {
+            const counter = screen.getByText('2 / 10 possible answers');
+            expect(counter).toBeInTheDocument();
+        });
+    });
+    test('Reset removes changes to question input', () => {
+        const questionPlaceholder = 'This is the placeholder';
+        setUp({ questionPlaceholder });
+        const questionInput = screen.getByPlaceholderText(questionPlaceholder);
+        userEvent.type(questionInput, 'New question input');
+        const reset = screen.getByTestId('poll-creator-reset');
+        userEvent.click(reset);
+        waitFor(() => {
+            const questionInput = screen.getByPlaceholderText(questionPlaceholder);
+            expect(questionInput).toHaveDisplayValue('');
+        });
+    });
+    test('Add button is disabled when max number of options is achieved', () => {
+        setUp({}, maxOptions);
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const button = getByRole(addOption, 'button');
+        expect(button).toBeDisabled();
+    });
+    test('Add option input is disabled when max number of options is achieved', () => {
+        setUp({}, maxOptions);
+        const addOption = screen.getByTestId('poll-creator-add-option');
+        const input = getByRole(addOption, 'textbox');
+        expect(input).toBeDisabled();
     });
 });
 
