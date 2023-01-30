@@ -13,7 +13,7 @@ export type TextInputProps = {
     onEnter?: (value: string) => void;
 };
 
-export const TextInput = ({ className, placeholder, value = '', disabled = false, maxLength = 80, onChange, onEnter }: TextInputProps): JSX.Element => {
+export const TextInput = ({ className, placeholder, disabled = false, onChange, onEnter, value = '', maxLength = 80 }: TextInputProps): JSX.Element => {
     const [text, setText] = useState<string>(value);
     const [currentValue] = useDebounce(text, 300);
 

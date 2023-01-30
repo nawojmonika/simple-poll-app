@@ -14,4 +14,4 @@ export type ButtonProps = {
 
 export const Button = ({ className, children, onClick, type = 'primary', big = false, disabled = false, testId = '' }: ButtonProps): JSX.Element => {
     return <button data-testid={testId} className={clsx(styles.button, styles[type], big && styles.big, className)} onClick={onClick} disabled={disabled}>{children}</button>
-}
+};

@@ -22,4 +22,4 @@ export const PollVoter = (): JSX.Element => {
             <Button className={styles.button} onClick={handleVote} disabled={currentOptionId.length === 0} big>Vote</Button>
         </section>
     );
-}
+};
