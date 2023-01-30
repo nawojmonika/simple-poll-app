@@ -73,7 +73,7 @@ const setUp = (props?: Omit<OptionsContextProps, 'children' | 'defaultOptions'>,
     );
 };
 
-describe('PollCreator tests', () => {
+describe('PollCreator component tests', () => {
     test('Renders questionPlaceholder when quesion is not set', () => {
         const questionPlaceholder = 'This is the placeholder';
         setUp({ questionPlaceholder });
