@@ -26,8 +26,8 @@ export const PollCreator = (): JSX.Element => {
         <section className={styles.container}>
             <TextInput placeholder={questionPlaceholder} value={question} onChange={setQuestion} />
             <div className={styles.optionList}>
-                {options.map((option) => <OptionInput key={option.id} {...option} onChange={changeOption} button={{ type: 'danger', disabled: disableRemoval, onClick: removeOption }} />)}
-                <OptionInput placeholder='Type an answer' value={optionText} onChange={handleOptionTextChange} onEnter={handleAddOption} disabled={disableAddition} button={{ content: 'Add', disabled: disableAddition, onClick: handleAddOption }} />
+                {options.map((option) => <OptionInput testId='poll-creator-option' key={option.id} {...option} onChange={changeOption} button={{ type: 'danger', disabled: disableRemoval, onClick: removeOption }} />)}
+                <OptionInput testId='poll-creator-add-option' placeholder='Type an answer' value={optionText} onChange={handleOptionTextChange} onEnter={handleAddOption} disabled={disableAddition} button={{ content: 'Add', disabled: disableAddition, onClick: handleAddOption }} />
             </div>
             <div className={styles.footer}>
                 <span>{options.length} / {maxOptions} possible answers</span>

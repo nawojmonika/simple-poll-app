@@ -1,8 +1,4 @@
 import { createContext, useContext, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
-const minOptions = 2;
-const maxOptions = 10;
 
 export type Option = {
     id: string;
@@ -10,19 +6,6 @@ export type Option = {
     value?: string;
     votes: number;
 }
-
-const defaultOptions: Option[] = [
-    {
-        id: uuidv4(),
-        placeholder: 'To be',
-        votes: 0,
-    },
-    {
-        id: uuidv4(),
-        placeholder: 'Not to be',
-        votes: 0,
-    },
-];
 
 type OptionsContextData = {
     question: string;
@@ -39,8 +22,12 @@ type OptionsContextData = {
     voteForOption: (id: string) => void;
 };
 
-type OptionsContextProps = {
+export type OptionsContextProps = {
     children: React.ReactNode;
+    defaultOptions: Option[];
+    minOptions?: number;
+    maxOptions?: number;
+    questionPlaceholder?: string;
 };
 
 export const OptionsContext = createContext<OptionsContextData>({
@@ -58,23 +45,25 @@ export const OptionsContext = createContext<OptionsContextData>({
     voteForOption: () => undefined,
 });
 
-export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element => {
+export const OptionsWrapper = ({ children, defaultOptions, minOptions = 2, maxOptions = 10, questionPlaceholder = 'What is the question?' }: OptionsContextProps): JSX.Element => {
     const [question, setQuestion] = useState<string>('');
     const [options, setOptions] = useState<Option[]>(defaultOptions);
     const [votes, setVotes] = useState<number>(0);
 
     const addOption = (id: string, value: string): void => {
-        setOptions([...options, { id, value, votes: 0 }]);
+        options.length < maxOptions && setOptions([...options, { id, value, votes: 0 }]);
     };
 
     const changeOption = (id: string, value: string): void => {
-        const mappedOptions = options.map((option) => ({ ...option, value: option.id === id ? value : option.value }))
+        const mappedOptions = options.map((option) => ({ ...option, value: option.id === id ? value : option.value }));
         setOptions(mappedOptions);
     };
 
     const removeOption = (id: string): void => {
-        const filteredOptions = options.filter((option) => option.id !== id);
-        setOptions(filteredOptions);
+        if (options.length > minOptions) {
+            const filteredOptions = options.filter((option) => option.id !== id);
+            setOptions(filteredOptions);
+        }
     };
 
     const resetOptions = (): void => {
@@ -84,13 +73,13 @@ export const OptionsWrapper = ({ children }: OptionsContextProps): JSX.Element =
     };
 
     const voteForOption = (id: string): void => {
-        const mappedOptions = options.map((option) => ({ ...option, votes: option.id === id ? option.votes + 1 : option.votes }))
+        const mappedOptions = options.map((option) => ({ ...option, votes: option.id === id ? option.votes + 1 : option.votes }));
         setOptions(mappedOptions);
         setVotes(votes + 1);
     };
 
     return (
-        <OptionsContext.Provider value={{ question, questionPlaceholder: 'What is the question?', options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
+        <OptionsContext.Provider value={{ question, questionPlaceholder, options, minOptions, maxOptions, votes, setQuestion, addOption, changeOption, removeOption, resetOptions, voteForOption }}>
             {children}
         </OptionsContext.Provider>
     );

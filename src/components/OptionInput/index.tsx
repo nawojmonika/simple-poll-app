@@ -15,9 +15,10 @@ export type OptionProps = Partial<Option> & Omit<TextInputProps, 'onChange' | 'o
     disabled?: boolean;
     onChange?: (id: string, value: string) => void;
     onEnter?: (id: string, value: string) => void;
+    testId?: string;
 };
 
-export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disabled = false, onChange, onEnter }: OptionProps): JSX.Element => {
+export const OptionInput = ({ placeholder, value, button, onChange, onEnter, id = uuidv4(), disabled = false, testId = 'option-input' }: OptionProps): JSX.Element => {
     const [text, setText] = useState('');
 
     const handleButtonClick = (): void => {
@@ -34,7 +35,7 @@ export const OptionInput = ({ id = uuidv4(), placeholder, value, button, disable
     };
 
     return (
-        <div className={styles.option}>
+        <div className={styles.option} data-testid={testId}>
             <TextInput className={styles.input} placeholder={placeholder} value={value} onChange={handleTextChange} onEnter={handleEnter} disabled={disabled} />
             <Button className={styles.button} {...button} onClick={handleButtonClick}>{button?.content ? button?.content : 'X'}</Button>
         </div>
