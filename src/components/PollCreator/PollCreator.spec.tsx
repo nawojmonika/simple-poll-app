@@ -1,4 +1,4 @@
-import { fireEvent, getAllByTestId, getByRole, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, getByRole, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PollCreator } from '.';
 import { OptionsWrapper, Option, OptionsContextProps } from '../OptionsContext';
