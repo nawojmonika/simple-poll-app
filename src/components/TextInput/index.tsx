@@ -8,11 +8,12 @@ export type TextInputProps = {
     placeholder?: string;
     value?: string;
     disabled?: boolean;
+    maxLength?: number;
     onChange?: (value: string) => void;
     onEnter?: (value: string) => void;
 };
 
-export const TextInput = ({ className, placeholder, value = '', disabled = false, onChange, onEnter }: TextInputProps): JSX.Element => {
+export const TextInput = ({ className, placeholder, value = '', disabled = false, maxLength = 80, onChange, onEnter }: TextInputProps): JSX.Element => {
     const [text, setText] = useState<string>(value);
     const [currentValue] = useDebounce(text, 300);
 
@@ -21,7 +22,7 @@ export const TextInput = ({ className, placeholder, value = '', disabled = false
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (value.length && event.key === 'Enter') {
+        if (event.key === 'Enter') {
             onEnter && onEnter(value);
         }
     };
@@ -34,5 +35,5 @@ export const TextInput = ({ className, placeholder, value = '', disabled = false
         setText(value);
     }, [value]);
 
-    return <input className={clsx(styles.input, className)} placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} onKeyDown={handleKeyDown} maxLength={80} />
+    return <input className={clsx(styles.input, className)} placeholder={placeholder} value={text} disabled={disabled} onChange={handleChange} onKeyDown={handleKeyDown} maxLength={maxLength} />
 };
