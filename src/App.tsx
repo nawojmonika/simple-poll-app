@@ -20,7 +20,7 @@ const defaultOptions: Option[] = [
   },
 ];
 
-function App() {
+const App = (): JSX.Element => {
   return (
     <div className={styles.App}>
       <header className={styles.header}>

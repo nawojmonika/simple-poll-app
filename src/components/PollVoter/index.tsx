@@ -19,7 +19,7 @@ export const PollVoter = (): JSX.Element => {
                 <h2 className={styles.header}>{header}</h2>
                 <RadioButtonGroup name={header} options={options} onChange={setCurrentOptionId} />
             </div>
-            <Button className={styles.button} onClick={handleVote} disabled={currentOptionId.length === 0} big>Vote</Button>
+            <Button testId='poll-voter-button' className={styles.button} onClick={handleVote} disabled={currentOptionId.length === 0} big>Vote</Button>
         </section>
     );
 };
