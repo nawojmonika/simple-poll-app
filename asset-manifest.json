@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/simple-poll-app/static/css/main.fb1dc071.css",
+    "main.js": "/simple-poll-app/static/js/main.b121fcf0.js",
+    "static/js/787.a6541d4a.chunk.js": "/simple-poll-app/static/js/787.a6541d4a.chunk.js",
+    "index.html": "/simple-poll-app/index.html",
+    "main.fb1dc071.css.map": "/simple-poll-app/static/css/main.fb1dc071.css.map",
+    "main.b121fcf0.js.map": "/simple-poll-app/static/js/main.b121fcf0.js.map",
+    "787.a6541d4a.chunk.js.map": "/simple-poll-app/static/js/787.a6541d4a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fb1dc071.css",
+    "static/js/main.b121fcf0.js"
+  ]
+}
