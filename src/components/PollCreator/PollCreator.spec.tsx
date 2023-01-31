@@ -65,12 +65,21 @@ const maxOptions = [
     },
 ];
 
-const setUp = (props?: Omit<OptionsContextProps, 'children' | 'defaultOptions'>, options: Option[] = defaultOptions): void => {
+type SetUpResult = {
+    addInput: HTMLElement;
+    addButton: HTMLElement;
+};
+
+const setUp = (props?: Omit<OptionsContextProps, 'children' | 'defaultOptions'>, options: Option[] = defaultOptions): SetUpResult => {
     render(
         <OptionsWrapper defaultOptions={options} {...props}>
             <PollCreator />
         </OptionsWrapper>
     );
+    const addOption = screen.getByTestId('poll-creator-add-option');
+    const addInput = getByRole(addOption, 'textbox');
+    const addButton = getByRole(addOption, 'button');
+    return ({ addInput, addButton });
 };
 
 describe('PollCreator component tests', () => {
@@ -120,12 +129,10 @@ describe('PollCreator component tests', () => {
     });
 
     test('New option can be added by pressing Enter after filling text input', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        userEvent.type(input, optionContent);
-        fireEvent.keyDown(input, { key: 'Enter' });
+        userEvent.type(addInput, optionContent);
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         waitFor(() => {
             const options = screen.getAllByTestId('poll-creator-option');
             expect(options.length).toBe(3);
@@ -133,14 +140,16 @@ describe('PollCreator component tests', () => {
         });
     });
 
+    test('Add button is disabled when input value is empty', () => {
+        const { addButton } = setUp();
+        expect(addButton).toBeDisabled();
+    });
+
     test('New option can be added by pressing add button after filling text input', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput, addButton } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        const button = getByRole(addOption, 'button');
-        userEvent.type(input, optionContent);
-        userEvent.click(button);
+        userEvent.type(addInput, optionContent);
+        userEvent.click(addButton);
         waitFor(() => {
             const options = screen.getAllByTestId('poll-creator-option');
             expect(options.length).toBe(3);
@@ -149,10 +158,8 @@ describe('PollCreator component tests', () => {
     });
 
     test('New option can\'t be added by pressing Enter when text input is empty', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
-        const input = getByRole(addOption, 'textbox');
-        fireEvent.keyDown(input, { key: 'Enter' });
+        const { addInput } = setUp();
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         waitFor(() => {
             const options = screen.getAllByTestId('poll-creator-option');
             expect(options.length).toBe(2);
@@ -160,10 +167,8 @@ describe('PollCreator component tests', () => {
     });
 
     test('New option can\'t be added by pressing add button when text input is empty', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
-        const button = getByRole(addOption, 'button');
-        userEvent.click(button);
+        const { addButton } = setUp();
+        userEvent.click(addButton);
         waitFor(() => {
             const options = screen.getAllByTestId('poll-creator-option');
             expect(options.length).toBe(2);
@@ -171,12 +176,10 @@ describe('PollCreator component tests', () => {
     });
 
     test('Option can be removed when number of options is greater than minOptions', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        userEvent.type(input, optionContent);
-        fireEvent.keyDown(input, { key: 'Enter' });
+        userEvent.type(addInput, optionContent);
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         const option1 = screen.getAllByTestId('poll-creator-option')[0];
         const removeButton = getByRole(option1, 'button');
         userEvent.click(removeButton);
@@ -193,12 +196,10 @@ describe('PollCreator component tests', () => {
     });
 
     test('Counter updates value after adding new option', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        userEvent.type(input, optionContent);
-        fireEvent.keyDown(input, { key: 'Enter' });
+        userEvent.type(addInput, optionContent);
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         waitFor(() => {
             const counter = screen.getByText('3 / 10 possible answers');
             expect(counter).toBeInTheDocument();
@@ -222,12 +223,10 @@ describe('PollCreator component tests', () => {
     });
 
     test('Reset button removes added options', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        userEvent.type(input, optionContent);
-        fireEvent.keyDown(input, { key: 'Enter' });
+        userEvent.type(addInput, optionContent);
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         const reset = screen.getByTestId('poll-creator-reset');
         userEvent.click(reset);
         waitFor(() => {
@@ -237,12 +236,10 @@ describe('PollCreator component tests', () => {
     });
 
     test('Counter updates after reset', () => {
-        setUp();
-        const addOption = screen.getByTestId('poll-creator-add-option');
+        const { addInput } = setUp();
         const optionContent = 'new option';
-        const input = getByRole(addOption, 'textbox');
-        userEvent.type(input, optionContent);
-        fireEvent.keyDown(input, { key: 'Enter' });
+        userEvent.type(addInput, optionContent);
+        fireEvent.keyDown(addInput, { key: 'Enter' });
         const reset = screen.getByTestId('poll-creator-reset');
         userEvent.click(reset);
         waitFor(() => {
@@ -265,17 +262,13 @@ describe('PollCreator component tests', () => {
     });
 
     test('Add button is disabled when max number of options is achieved', () => {
-        setUp({}, maxOptions);
-        const addOption = screen.getByTestId('poll-creator-add-option');
-        const button = getByRole(addOption, 'button');
-        expect(button).toBeDisabled();
+        const { addButton } = setUp({}, maxOptions);
+        expect(addButton).toBeDisabled();
     });
 
     test('Add option input is disabled when max number of options is achieved', () => {
-        setUp({}, maxOptions);
-        const addOption = screen.getByTestId('poll-creator-add-option');
-        const input = getByRole(addOption, 'textbox');
-        expect(input).toBeDisabled();
+        const { addInput } = setUp({}, maxOptions);
+        expect(addInput).toBeDisabled();
     });
 });
 
