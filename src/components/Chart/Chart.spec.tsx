@@ -30,6 +30,7 @@ describe('Chart component tests', () => {
             expect(element).toBeInTheDocument();
         });
     });
+
     test('renders option labels', () => {
         setUp();
         waitFor(() => {
@@ -41,6 +42,7 @@ describe('Chart component tests', () => {
             expect(option3).toBeInTheDocument();
         });
     });
+
     test('renders option vote count', () => {
         setUp();
         waitFor(() => {

@@ -80,11 +80,13 @@ describe('PollCreator component tests', () => {
         const placeholder = screen.getByPlaceholderText(questionPlaceholder);
         expect(placeholder).toBeInTheDocument();
     });
+
     test('Renders all option elements', () => {
         setUp();
         const options = screen.getAllByTestId('poll-creator-option');
         expect(options.length).toBe(2);
     });
+
     test('Renders default options placeholders', () => {
         setUp();
         const option1 = screen.getByPlaceholderText(defaultOptions[0].placeholder as string);
@@ -92,6 +94,7 @@ describe('PollCreator component tests', () => {
         expect(option1).toBeInTheDocument();
         expect(option2).toBeInTheDocument();
     });
+
     test('Option can be updated', () => {
         setUp();
         const option1 = screen.getByPlaceholderText(defaultOptions[0].placeholder as string);
@@ -99,6 +102,7 @@ describe('PollCreator component tests', () => {
         userEvent.type(option1, value);
         expect(option1).toHaveValue(value);
     });
+
     test('Option can\'t be removed when number of options equals minOptions', () => {
         setUp();
         const option1 = screen.getAllByTestId('poll-creator-option')[0];
@@ -107,12 +111,14 @@ describe('PollCreator component tests', () => {
         const options = screen.getAllByTestId('poll-creator-option');
         expect(options.length).toBe(2);
     });
+
     test('Option buttons are disabled when number of options equals minOptions', () => {
         setUp();
         const option1 = screen.getAllByTestId('poll-creator-option')[0];
         const removeButton = getByRole(option1, 'button');
         expect(removeButton).toBeDisabled();
     });
+
     test('New option can be added by pressing Enter after filling text input', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -126,6 +132,7 @@ describe('PollCreator component tests', () => {
             expect(options[2]).toHaveTextContent(optionContent);
         });
     });
+
     test('New option can be added by pressing add button after filling text input', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -140,6 +147,7 @@ describe('PollCreator component tests', () => {
             expect(options[2]).toHaveTextContent(optionContent);
         });
     });
+
     test('New option can\'t be added by pressing Enter when text input is empty', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -150,6 +158,7 @@ describe('PollCreator component tests', () => {
             expect(options.length).toBe(2);
         });
     });
+
     test('New option can\'t be added by pressing add button when text input is empty', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -160,6 +169,7 @@ describe('PollCreator component tests', () => {
             expect(options.length).toBe(2);
         });
     });
+
     test('Option can be removed when number of options is greater than minOptions', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -175,11 +185,13 @@ describe('PollCreator component tests', () => {
             expect(options.length).toBe(2);
         });
     });
+
     test('Counter shows current number of options', () => {
         setUp();
         const counter = screen.getByText('2 / 10 possible answers');
         expect(counter).toBeInTheDocument();
     });
+
     test('Counter updates value after adding new option', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -192,6 +204,7 @@ describe('PollCreator component tests', () => {
             expect(counter).toBeInTheDocument();
         });
     });
+
     test('Reset button removes changes on default options', () => {
         setUp();
         const option1 = screen.getByPlaceholderText(defaultOptions[0].placeholder as string);
@@ -207,6 +220,7 @@ describe('PollCreator component tests', () => {
             expect(option2).toHaveValue('');
         });
     });
+
     test('Reset button removes added options', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -221,6 +235,7 @@ describe('PollCreator component tests', () => {
             expect(options.length).toBe(2);
         });
     });
+
     test('Counter updates after reset', () => {
         setUp();
         const addOption = screen.getByTestId('poll-creator-add-option');
@@ -235,6 +250,7 @@ describe('PollCreator component tests', () => {
             expect(counter).toBeInTheDocument();
         });
     });
+
     test('Reset removes changes to question input', () => {
         const questionPlaceholder = 'This is the placeholder';
         setUp({ questionPlaceholder });
@@ -247,12 +263,14 @@ describe('PollCreator component tests', () => {
             expect(questionInput).toHaveDisplayValue('');
         });
     });
+
     test('Add button is disabled when max number of options is achieved', () => {
         setUp({}, maxOptions);
         const addOption = screen.getByTestId('poll-creator-add-option');
         const button = getByRole(addOption, 'button');
         expect(button).toBeDisabled();
     });
+
     test('Add option input is disabled when max number of options is achieved', () => {
         setUp({}, maxOptions);
         const addOption = screen.getByTestId('poll-creator-add-option');

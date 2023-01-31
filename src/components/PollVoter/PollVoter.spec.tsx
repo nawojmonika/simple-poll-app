@@ -37,11 +37,13 @@ describe('PollVoter component tests', () => {
         const element = screen.getByText(questionPlaceholder);
         expect(element).toBeInTheDocument();
     });
+
     test('vote button is disabled when no option is chosen', () => {
         setUp();
         const button = screen.getByRole('button');
         expect(button).toBeDisabled();
     });
+
     test('vote button is enabled when option is chosen', () => {
         setUp();
         const options = screen.getAllByRole('radio');

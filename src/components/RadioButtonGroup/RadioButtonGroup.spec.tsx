@@ -40,32 +40,38 @@ describe('RadioButtonGroup component tests', () => {
         const options = screen.getAllByRole('radio');
         expect(options[0]).toHaveAttribute('name', name);
     });
+
     test('component renders all passed options', () => {
         setUp();
         const options = screen.getAllByRole('radio');
         expect(options.length).toBe(3);
     });
+
     test('component renders value as input label if provided', () => {
         setUp();
         const option = screen.getByLabelText(options[0].value as string);
         expect(option).toBeInTheDocument();
     });
+
     test('component renders placeholder as input label if value is not provided', () => {
         setUp();
         const option = screen.getByLabelText(options[1].placeholder as string);
         expect(option).toBeInTheDocument();
     });
+
     test('component renders value as input label if both value and placeholder is provided', () => {
         setUp();
         const option = screen.getByLabelText(options[2].value as string);
         expect(option).toBeInTheDocument();
     });
+
     test('component calls onChange method when option is chosen', () => {
         const { onChange } = setUp();
         const option = screen.getByLabelText(options[0].value as string);
         userEvent.click(option);
         expect(onChange).toBeCalled();
     });
+
     test('component calls onChange method with option id', () => {
         const { onChange } = setUp();
         const option = screen.getByLabelText(options[0].value as string);
