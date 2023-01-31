@@ -9,6 +9,7 @@
 
 .button:disabled {
     cursor: not-allowed;
+    background-color: hsl(0, 0%, 71%);
 }
 
 .big {
